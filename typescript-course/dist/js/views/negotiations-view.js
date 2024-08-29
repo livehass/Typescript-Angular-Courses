@@ -1,9 +1,7 @@
-import { Negotiations } from "../models/negotiations.js";
 import { View } from "./view.js";
-
-export class NegotiationsView extends View<Negotiations> {
-  template(model: Negotiations): string {
-    return `
+export class NegotiationsView extends View {
+    template(model) {
+        return `
             <table class="table table-hover table-bordered">
                 <thread>
                     <tr>
@@ -13,25 +11,23 @@ export class NegotiationsView extends View<Negotiations> {
                     </tr>
                     <tbody>
                         ${model
-                          .listNegotiations()
-                          .map((negotiation) => {
-                            return `
+            .listNegotiations()
+            .map((negotiation) => {
+            return `
                             <tr>
-                                <td>${new Intl.DateTimeFormat().format(
-                                  negotiation.date
-                                )}</td>
+                                <td>${new Intl.DateTimeFormat().format(negotiation.date)}</td>
                                 <td>${negotiation.amount}</td>
                                 <td>${negotiation.value}</td>
                             </tr>
                             
                             `;
-                          })
-                          .join("")}
+        })
+            .join("")}
                     </tbody>
                 </thread >
             </table>
         
         
         `;
-  }
+    }
 }
