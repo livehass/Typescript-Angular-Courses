@@ -2,6 +2,7 @@ import { Negotiation } from "../models/negotiation.js";
 import { Negotiations } from "../models/negotiations.js";
 import { messageView } from "../views/message-view.js";
 import { NegotiationsView } from "../views/negotiations-view.js";
+import { daysOfTheWeek } from "../enums/days-of-the-week.js";
 
 export class NegotiationController {
   private inputDate: HTMLInputElement;
@@ -10,8 +11,6 @@ export class NegotiationController {
   private negotiations = new Negotiations();
   private negotiationsView = new NegotiationsView("#negotiationsView");
   private messageView = new messageView("#messageview");
-  private readonly SATURDAY: number = 6;
-  private readonly SUNDAY: number = 0;
 
   constructor() {
     this.inputDate = document.querySelector("#data");
@@ -21,18 +20,23 @@ export class NegotiationController {
   }
   public sum(): void {
     const negotiation = this.createNewNegotiation();
-
-    if (
-      negotiation.date.getDay() > this.SUNDAY &&
-      negotiation.date.getDay() < this.SATURDAY
-    ) {
-      this.negotiations.sum(negotiation);
-      this.clearForm();
-      this.updateView();
-    } else {
+    if (!this.isBusinessDay(negotiation.date)) {
       this.messageView.update("Only on business day negotiations are accepted");
+      return;
     }
+
+    this.negotiations.sum(negotiation);
+    this.clearForm();
+    this.updateView();
   }
+
+  private isBusinessDay(date: Date) {
+    return (
+      date.getDay() > daysOfTheWeek.SUNDAY &&
+      date.getDay() < daysOfTheWeek.SATURDAY
+    );
+  }
+
   private createNewNegotiation(): Negotiation {
     const exp = /-/g;
     const date = new Date(this.inputDate.value.replace(exp, ","));
