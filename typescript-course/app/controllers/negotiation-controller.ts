@@ -10,6 +10,8 @@ export class NegotiationController {
   private negotiations = new Negotiations();
   private negotiationsView = new NegotiationsView("#negotiationsView");
   private messageView = new messageView("#messageview");
+  private readonly SATURDAY: number = 6;
+  private readonly SUNDAY: number = 0;
 
   constructor() {
     this.inputDate = document.querySelector("#data");
@@ -19,9 +21,17 @@ export class NegotiationController {
   }
   public sum(): void {
     const negotiation = this.createNewNegotiation();
-    this.negotiations.sum(negotiation);
-    this.clearForm();
-    this.updateView();
+
+    if (
+      negotiation.date.getDay() > this.SUNDAY &&
+      negotiation.date.getDay() < this.SATURDAY
+    ) {
+      this.negotiations.sum(negotiation);
+      this.clearForm();
+      this.updateView();
+    } else {
+      this.messageView.update("Only on business day negotiations are accepted");
+    }
   }
   private createNewNegotiation(): Negotiation {
     const exp = /-/g;
@@ -41,6 +51,6 @@ export class NegotiationController {
 
   private updateView(): void {
     this.negotiationsView.update(this.negotiations);
-    this.messageView.update("Negociação adicionada com sucesso");
+    this.messageView.update("Negotiation successfully added");
   }
 }
