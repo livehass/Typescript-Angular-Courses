@@ -17,14 +17,13 @@ export class NegotiationController {
     this.inputValue = document.querySelector("#valor");
     this.negotiationsView.update(this.negotiations);
   }
-  sum(): void {
+  public sum(): void {
     const negotiation = this.createNewNegotiation();
     this.negotiations.sum(negotiation);
-    this.negotiationsView.update(this.negotiations);
-    this.messageView.update("Negociação adicionada com sucesso");
     this.clearForm();
+    this.updateView();
   }
-  createNewNegotiation(): Negotiation {
+  private createNewNegotiation(): Negotiation {
     const exp = /-/g;
     const date = new Date(this.inputDate.value.replace(exp, ","));
     const amount = parseInt(this.inputAmount.value);
@@ -33,10 +32,15 @@ export class NegotiationController {
     return new Negotiation(date, amount, value);
   }
 
-  clearForm(): void {
+  private clearForm(): void {
     this.inputDate.value = "";
     this.inputAmount.value = "";
     this.inputValue.value = "";
     this.inputDate.focus();
+  }
+
+  private updateView(): void {
+    this.negotiationsView.update(this.negotiations);
+    this.messageView.update("Negociação adicionada com sucesso");
   }
 }

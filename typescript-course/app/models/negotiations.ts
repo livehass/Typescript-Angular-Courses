@@ -3,10 +3,10 @@ import { Negotiation } from "./negotiation.js";
 export class Negotiations {
   private negotiations: Array<Negotiation> = [];
 
-  sum(negotiation: Negotiation) {
+  public sum(negotiation: Negotiation) {
     this.negotiations.push(negotiation);
   }
-  listNegotiations(): readonly Negotiation[] {
+  public listNegotiations(): readonly Negotiation[] {
     return this.negotiations;
   }
 }
