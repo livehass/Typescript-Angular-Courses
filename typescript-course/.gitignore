@@ -1,6 +1,6 @@
 /node_modules
 /servidor-api/node_modules
-/dist*
+/dist/js/*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
